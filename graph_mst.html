@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Graph and MST Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .graph-container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            width: 550px;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #333;
+        }
+        .node {
+            fill: #6495ED;
+            stroke: #333;
+            stroke-width: 2px;
+        }
+        .edge {
+            stroke: #999;
+            stroke-width: 2px;
+        }
+        .mst-edge {
+            stroke: #ff6347;
+            stroke-width: 3px;
+        }
+        .node-label {
+            font-size: 14px;
+            font-weight: bold;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            fill: white;
+        }
+        .edge-weight {
+            font-size: 12px;
+            text-anchor: middle;
+            fill: #333;
+            font-weight: bold;
+            background-color: white;
+        }
+        .legend {
+            margin-top: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .legend-color {
+            width: 20px;
+            height: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Graph and MST Visualization</h1>
+    
+    <div class="container">
+        <div class="graph-container">
+            <h2>Complete Graph</h2>
+            <svg id="graph" width="500" height="400"></svg>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #999;"></div>
+                    <span>Regular Edge</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="graph-container">
+            <h2>Minimum Spanning Tree (MST)</h2>
+            <svg id="mst" width="500" height="400"></svg>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color" style="background-color: #ff6347;"></div>
+                    <span>MST Edge</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Define graph data from the adjacency matrix
+        const adjacencyMatrix = [
+            [0, 2, 0, 3, 1],
+            [2, 0, 3, 0, 4],
+            [0, 3, 0, 5, 0],
+            [3, 0, 5, 0, 8],
+            [1, 4, 0, 8, 0]
+        ];
+        
+        // Define MST data from the output
+        const mstEdges = [
+            {source: 0, target: 1, weight: 2},
+            {source: 1, target: 2, weight: 3},
+            {source: 0, target: 3, weight: 3},
+            {source: 0, target: 4, weight: 1}
+        ];
+        
+        // Set up node positions in a circular layout
+        const nodeCount = adjacencyMatrix.length;
+        const nodes = [];
+        const centerX = 250;
+        const centerY = 200;
+        const radius = 150;
+        
+        for (let i = 0; i < nodeCount; i++) {
+            const angle = (i * 2 * Math.PI / nodeCount) - Math.PI/2; // Start from top
+            nodes.push({
+                id: i,
+                x: centerX + radius * Math.cos(angle),
+                y: centerY + radius * Math.sin(angle)
+            });
+        }
+        
+        // Extract edges from adjacency matrix
+        const edges = [];
+        for (let i = 0; i < nodeCount; i++) {
+            for (let j = i + 1; j < nodeCount; j++) {
+                if (adjacencyMatrix[i][j] !== 0) {
+                    edges.push({
+                        source: i,
+                        target: j,
+                        weight: adjacencyMatrix[i][j]
+                    });
+                }
+            }
+        }
+        
+        // Function to draw the graph
+        function drawGraph(svgId, nodes, edges, mstMode = false) {
+            const svg = document.getElementById(svgId);
+            
+            // Draw edges
+            edges.forEach(edge => {
+                const source = nodes[edge.source];
+                const target = nodes[edge.target];
+                
+                // Edge line
+                const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                line.setAttribute('x1', source.x);
+                line.setAttribute('y1', source.y);
+                line.setAttribute('x2', target.x);
+                line.setAttribute('y2', target.y);
+                line.setAttribute('class', mstMode ? 'mst-edge' : 'edge');
+                svg.appendChild(line);
+                
+                // Edge weight
+                const textX = (source.x + target.x) / 2;
+                const textY = (source.y + target.y) / 2;
+                
+                // Add small white background for better visibility
+                const textBg = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                textBg.setAttribute('cx', textX);
+                textBg.setAttribute('cy', textY);
+                textBg.setAttribute('r', 8);
+                textBg.setAttribute('fill', 'white');
+                svg.appendChild(textBg);
+                
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', textX);
+                text.setAttribute('y', textY);
+                text.setAttribute('class', 'edge-weight');
+                text.textContent = edge.weight;
+                svg.appendChild(text);
+            });
+            
+            // Draw nodes
+            nodes.forEach(node => {
+                // Node circle
+                const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                circle.setAttribute('cx', node.x);
+                circle.setAttribute('cy', node.y);
+                circle.setAttribute('r', 20);
+                circle.setAttribute('class', 'node');
+                svg.appendChild(circle);
+                
+                // Node label
+                const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+                text.setAttribute('x', node.x);
+                text.setAttribute('y', node.y);
+                text.setAttribute('class', 'node-label');
+                text.textContent = node.id;
+                svg.appendChild(text);
+            });
+        }
+        
+        // Draw the complete graph
+        drawGraph('graph', nodes, edges);
+        
+        // Draw the MST
+        drawGraph('mst', nodes, mstEdges, true);
+    </script>
+</body>
+</html>

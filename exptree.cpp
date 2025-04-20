@@ -124,10 +124,56 @@ public:
 
 int main() {
     ExpressionTree tree;
-    string prefix = "+--a*bc/def";
-    Node* root = tree.constructTree(prefix);
-    tree.postOrder(root);
-    tree.deleteTree(root);
-    cout<<"Tree deleted"<<endl;
-    return 0;
+    string prefix;
+    int choice;
+    Node* root = nullptr;
+
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Construct Expression Tree\n";
+        cout << "2. Postorder Traversal\n";
+        cout << "3. Delete Tree\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter prefix expression: ";
+                cin >> prefix;
+                if(root != nullptr)
+                {
+                    tree.deleteTree(root);
+                }
+                root = tree.constructTree(prefix);
+                if(root != nullptr){
+                    cout << "Expression tree constructed.\n";
+                }
+                break;
+            case 2:
+                if (root == nullptr) {
+                    cout << "Tree is empty. Construct tree first.\n";
+                } else {
+                    tree.postOrder(root);
+                }
+                break;
+            case 3:
+                if (root == nullptr) {
+                    cout << "Tree is empty.\n";
+                } else {
+                    tree.deleteTree(root);
+                    root = nullptr;
+                    cout << "Tree deleted.\n";
+                }
+                break;
+            case 4:
+                if(root != nullptr){
+                    tree.deleteTree(root);
+                }
+                cout << "Exiting program.\n";
+                break;
+            default:
+                cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 4);
 }

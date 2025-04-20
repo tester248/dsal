@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SFG Graph Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .node {
+            fill: lightblue;
+            stroke: #333;
+            stroke-width: 2px;
+        }
+        .node-text {
+            font-size: 14px;
+            text-anchor: middle;
+            dominant-baseline: central;
+            font-weight: bold;
+        }
+        .link {
+            stroke: #999;
+            stroke-width: 2px;
+            stroke-opacity: 0.8;
+            fill: none;
+        }
+        svg {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .matrix-table {
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .matrix-table th, .matrix-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .matrix-table th {
+            background-color: #f2f2f2;
+        }
+        .list-container {
+            margin: 20px 0;
+        }
+        .list-item {
+            margin: 5px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>SFG Graph Visualization</h1>
+    
+    <svg width="700" height="600" viewBox="0 0 700 600" id="graph">
+        <!-- Nodes -->
+        <g class="nodes">
+            <!-- MB node (center) -->
+            <circle class="node" cx="350" cy="300" r="40"></circle>
+            <text class="node-text" x="350" y="300">MB</text>
+            
+            <!-- AC node (top left) -->
+            <circle class="node" cx="200" cy="150" r="40"></circle>
+            <text class="node-text" x="200" y="150">AC</text>
+            
+            <!-- AIDS_Dept node (top right) -->
+            <circle class="node" cx="500" cy="150" r="50"></circle>
+            <text class="node-text" x="500" y="150">AIDS_Dept</text>
+            
+            <!-- Canteen node (bottom left) -->
+            <circle class="node" cx="200" cy="450" r="40"></circle>
+            <text class="node-text" x="200" y="450">Canteen</text>
+            
+            <!-- Library node (bottom right) -->
+            <circle class="node" cx="500" cy="450" r="40"></circle>
+            <text class="node-text" x="500" y="450">Library</text>
+        </g>
+        
+        <!-- Edges (undirected) -->
+        <g class="links">
+            <!-- MB to AC -->
+            <path class="link" d="M320 270 Q280 230 230 170"></path>
+            
+            <!-- MB to AIDS_Dept -->
+            <path class="link" d="M380 270 Q420 230 470 170"></path>
+            
+            <!-- MB to Canteen -->
+            <path class="link" d="M320 330 Q280 370 230 430"></path>
+            
+            <!-- MB to Library -->
+            <path class="link" d="M380 330 Q420 370 470 430"></path>
+            
+            <!-- AC to Canteen -->
+            <path class="link" d="M200 190 Q200 300 200 410"></path>
+            
+            <!-- AIDS_Dept to Library -->
+            <path class="link" d="M500 200 Q500 300 500 410"></path>
+        </g>
+    </svg>
+
+    <h2>Adjacency Matrix:</h2>
+    <table class="matrix-table">
+        <tr>
+            <th></th>
+            <th>MB</th>
+            <th>AC</th>
+            <th>AIDS_Dept</th>
+            <th>Canteen</th>
+            <th>Library</th>
+        </tr>
+        <tr>
+            <th>MB</th>
+            <td>0</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>AC</th>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <th>AIDS_Dept</th>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1</td>
+        </tr>
+        <tr>
+            <th>Canteen</th>
+            <td>1</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+        <tr>
+            <th>Library</th>
+            <td>1</td>
+            <td>0</td>
+            <td>1</td>
+            <td>0</td>
+            <td>0</td>
+        </tr>
+    </table>
+
+    <h2>Adjacency List:</h2>
+    <div class="list-container">
+        <div class="list-item">MB → AC AIDS_Dept Library Canteen</div>
+        <div class="list-item">AC → MB Canteen</div>
+        <div class="list-item">AIDS_Dept → MB Library</div>
+        <div class="list-item">Canteen → MB AC</div>
+        <div class="list-item">Library → MB AIDS_Dept</div>
+    </div>
+</body>
+</html>

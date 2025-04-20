@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Optimal Binary Search Tree Visualization</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .tree-container {
+            width: 100%;
+            overflow: auto;
+        }
+        svg {
+            display: block;
+            margin: 20px auto;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+        }
+        .node circle {
+            fill: #fff;
+            stroke: steelblue;
+            stroke-width: 3px;
+        }
+        .node text {
+            font: 12px sans-serif;
+        }
+        .link {
+            fill: none;
+            stroke: #ccc;
+            stroke-width: 2px;
+        }
+        .info {
+            background-color: #e6f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .traversal {
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Optimal Binary Search Tree Visualization</h1>
+        
+        <div class="info">
+            <h3>Tree Information:</h3>
+            <div class="traversal"><strong>Keywords:</strong> out, float, if, while</div>
+            <div class="traversal"><strong>Inorder:</strong> out float if while</div>
+            <div class="traversal"><strong>Preorder:</strong> float out if while</div>
+            <div class="traversal"><strong>Postorder:</strong> out while if float</div>
+            <div class="traversal"><strong>Root:</strong> float</div>
+        </div>
+        
+        <div id="tree-container" class="tree-container">
+            <svg id="tree-svg" width="800" height="500"></svg>
+        </div>
+    </div>
+
+    <script>
+        // Tree node class
+        class TreeNode {
+            constructor(value) {
+                this.value = value;
+                this.left = null;
+                this.right = null;
+            }
+        }
+
+        // Function to build tree from preorder and inorder traversal
+        function buildTree(preorder, inorder) {
+            if (preorder.length === 0 || inorder.length === 0) {
+                return null;
+            }
+            
+            // Root is the first element in preorder
+            const rootValue = preorder[0];
+            const root = new TreeNode(rootValue);
+            
+            // Find position of root in inorder
+            const rootIndexInorder = inorder.indexOf(rootValue);
+            
+            // Split inorder into left and right subtrees
+            const inorderLeft = inorder.slice(0, rootIndexInorder);
+            const inorderRight = inorder.slice(rootIndexInorder + 1);
+            
+            // Split preorder into left and right subtrees
+            const preorderLeft = preorder.slice(1, 1 + inorderLeft.length);
+            const preorderRight = preorder.slice(1 + inorderLeft.length);
+            
+            // Recursively build left and right subtrees
+            root.left = buildTree(preorderLeft, inorderLeft);
+            root.right = buildTree(preorderRight, inorderRight);
+            
+            return root;
+        }
+
+        // Calculate tree dimensions for drawing
+        function calculateTreeDimensions(root, depth = 0, pos = 0, minMax = { min: 0, max: 0 }, positions = []) {
+            if (!root) return;
+            
+            // Ensure positions array has enough levels
+            while (positions.length <= depth) positions.push([]);
+            
+            // Store node position
+            positions[depth].push({ node: root, x: pos });
+            
+            // Update min/max positions
+            minMax.min = Math.min(minMax.min, pos);
+            minMax.max = Math.max(minMax.max, pos);
+            
+            // Process children
+            const spacing = Math.pow(2, 5 - depth);
+            calculateTreeDimensions(root.left, depth + 1, pos - spacing, minMax, positions);
+            calculateTreeDimensions(root.right, depth + 1, pos + spacing, minMax, positions);
+            
+            return { minMax, positions };
+        }
+
+        // Draw the tree on SVG
+        function drawTree(root) {
+            const svg = document.getElementById('tree-svg');
+            
+            // Clear SVG
+            while (svg.firstChild) {
+                svg.removeChild(svg.firstChild);
+            }
+            
+            if (!root) return;
+            
+            // Calculate tree layout
+            const { minMax, positions } = calculateTreeDimensions(root);
+            const width = svg.getAttribute('width');
+            const height = svg.getAttribute('height');
+            
+            // Calculate scale factors
+            const treeWidth = minMax.max - minMax.min;
+            const xScale = (width - 100) / (treeWidth + 1);
+            const yScale = (height - 100) / (positions.length);
+            
+            // Create a group for the whole tree
+            const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+            g.setAttribute('transform', `translate(${-minMax.min * xScale + 50}, 50)`);
+            svg.appendChild(g);
+            
+            // Draw edges first (so they are behind nodes)
+            for (let depth = 0; depth < positions.length - 1; depth++) {
+                for (const { node, x } of positions[depth]) {
+                    if (node.left) {
+                        // Find left child position
+                        const childPos = positions[depth + 1].find(p => p.node === node.left);
+                        if (childPos) {
+                            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                            line.setAttribute('x1', x * xScale);
+                            line.setAttribute('y1', depth * yScale + 20); // +20 to connect from bottom of node
+                            line.setAttribute('x2', childPos.x * xScale);
+                            line.setAttribute('y2', (depth + 1) * yScale - 20); // -20 to connect to top of node
+                            line.setAttribute('stroke', '#666');
+                            line.setAttribute('stroke-width', '2');
+                            g.appendChild(line);
+                        }
+                    }
+                    if (node.right) {
+                        // Find right child position
+                        const childPos = positions[depth + 1].find(p => p.node === node.right);
+                        if (childPos) {
+                            const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                            line.setAttribute('x1', x * xScale);
+                            line.setAttribute('y1', depth * yScale + 20);
+                            line.setAttribute('x2', childPos.x * xScale);
+                            line.setAttribute('y2', (depth + 1) * yScale - 20);
+                            line.setAttribute('stroke', '#666');
+                            line.setAttribute('stroke-width', '2');
+                            g.appendChild(line);
+                        }
+                    }
+                }
+            }
+            
+            // Draw nodes
+            for (let depth = 0; depth < positions.length; depth++) {
+                for (const { node, x } of positions[depth]) {
+                    // Create node circle
+                    const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                    circle.setAttribute('cx', x * xScale);
+                    circle.setAttribute('cy', depth * yScale);
+                    circle.setAttribute('r', 20);
+                    circle.setAttribute('fill', '#fff');
+                    circle.setAttribute('stroke', depth === 0 ? '#ff6347' : '#4682b4');
+                    circle.setAttribute('stroke-width', '3');
+                    g.appendChild(circle);
+                    
+                    // Create node text
+                    const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    text.setAttribute('x', x * xScale);
+                    text.setAttribute('y', depth * yScale + 5);
+                    text.setAttribute('text-anchor', 'middle');
+                    text.setAttribute('font-family', 'Arial');
+                    text.setAttribute('font-size', '12');
+                    text.textContent = node.value;
+                    g.appendChild(text);
+                }
+            }
+        }
+
+        // Execute when page loads
+        window.onload = function() {
+            // Tree data from temp.txt
+            const preorder = ["float", "out", "if", "while"];
+            const inorder = ["out", "float", "if", "while"];
+            
+            // Build the tree
+            const root = buildTree(preorder, inorder);
+            
+            // Draw the tree
+            drawTree(root);
+        };
+    </script>
+</body>
+</html>

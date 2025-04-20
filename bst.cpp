@@ -1,133 +1,229 @@
 #include <iostream>
+
 using namespace std;
 
-struct Node {
-    int data;
-    Node* left;
-    Node* right;
-    Node(int val) : data(val), left(nullptr), right(nullptr) {}
-};
+class BST
+{
+    struct Node
+    {
+        int data;
+        Node *left, *right;
 
-class BST {
-private:
-    Node* root;
-
-    Node* insert(Node* node, int data) {
-        if (node == nullptr) {
-            return new Node(data);
+        Node(int val)
+        {
+            data = val;
+            left = right = nullptr;
         }
-        if (data < node->data) {
-            node->left = insert(node->left, data);
-        } else {
-            node->right = insert(node->right, data);
-        }
-        return node;
-    }
-
-    int findMin(Node* node) {
-        while (node->left != nullptr) {
-            node = node->left;
-        }
-        return node->data;
-    }
-
-    int findMaxDepth(Node* node) {
-        if (node == nullptr) {
-            return 0;
-        }
-        int leftDepth = findMaxDepth(node->left);
-        int rightDepth = findMaxDepth(node->right);
-        return max(leftDepth, rightDepth) + 1;
-    }
-
-    Node* swapChildren(Node* node) {
-        if (node == nullptr) {
-            return nullptr;
-        }
-        swap(node->left, node->right);
-        swapChildren(node->left);
-        swapChildren(node->right);
-        return node;
-    }
-
-    bool search(Node* node, int data) {
-        if (node == nullptr) {
-            return false;
-        }
-        if (node->data == data) {
-            return true;
-        }
-        if (data < node->data) {
-            return search(node->left, data);
-        } else {
-            return search(node->right, data);
-        }
-    }
-
+    };
+    Node *root;
 public:
-    BST() : root(nullptr) {}
-
-    void insert(int data) {
-        root = insert(root, data);
+    BST()
+    {
+        root = nullptr;
     }
 
-    int findMin() {
-        if (root == nullptr) {
-            throw runtime_error("Tree is empty");
-        }
-        return findMin(root);
-    }
+    Node *return_root() { return root; }
 
-    int findMaxDepth() {
-        return findMaxDepth(root);
-    }
-
-    void swapChildren() {
-        root = swapChildren(root);
-    }
-
-    bool search(int data) {
-        return search(root, data);
-    }
-
-    void inorder(Node* node) {
-        if (node == nullptr) {
-            return;
-        }
-        inorder(node->left);
-        cout << node->data << " ";
-        inorder(node->right);
-    }
-
-    void display() {
-        inorder(root);
-        cout << endl;
-    }
+    void insert();
+    void display(Node *);
+    int search();
+    int height(Node *);
+    int findMin(Node *);
+    void mirror(Node *);
+    void mirrorTree();
 };
 
-int main() {
-    BST tree;
-    int values[] = {50, 30, 20, 40, 70, 60, 80};
-    for (int val : values) {
-        tree.insert(val);
+void BST::insert()
+{
+    Node *temp = root;
+    int val;
+    cout << "\nEnter value of node: ";
+    cin >> val;
+    Node *newnode = new Node(val);
+
+    if (root == NULL)
+    {
+        root = newnode;
+        cout << "\nRoot node created"<<endl;
     }
+    else
+    {
+        while (true)
+        {
+            if (val < temp->data)
+            {
+                if (temp->left == NULL)
+                {
+                    temp->left = newnode;
+                    cout << "\nLeft node Inserted";
+                    break;
+                }
+                else
+                {
+                    temp = temp->left;
+                }
+            }
+            else if (val > temp->data)
+            {
+                if (temp->right == NULL)
+                {
+                    temp->right = newnode;
+                    cout << "\nRight node inserted";
+                    break;
+                }
+                else
+                {
+                    temp = temp->right;
+                }
+            }
+            else
+            {
+                cout << "\nEntry repeated";
+                break;
+            }
+        }
+    }
+}
 
-    cout << "Inorder traversal of the BST: ";
-    tree.display();
+void BST::display(Node *temp)
+{
+    if (temp != NULL)
+    {
+        display(temp->left);
+        cout << "\t" << temp->data << " ";
+        display(temp->right);
+    }
+}
 
-    tree.insert(25);
-    cout << "Inorder traversal after inserting 25: ";
-    tree.display();
-
-    cout << "Number of nodes in longest path from root: " << tree.findMaxDepth() << endl;
-    cout << "Minimum data value found in the tree: " << tree.findMin() << endl;
-
-    tree.swapChildren();
-    cout << "Inorder traversal after swapping children: ";
-    tree.display();
-
-    int searchValue = 40;
-    cout << "Search for value " << searchValue << ": " << (tree.search(searchValue) ? "Found" : "Not Found") << endl;
-
+int BST::search()
+{
+    Node *temp = root;
+    int key;
+    cout << "\nEnter the value to search: ";
+    cin >> key;
+    while (temp != NULL)
+    {
+        if (key < temp->data)
+        {
+            temp = temp->left;
+        }
+        else if (key > temp->data)
+        {
+            temp = temp->right;
+        }
+        else
+        {
+            cout << "\nValue " << key << " is present";
+            return 1;
+        }
+    }
     return 0;
+}
+
+int BST::height(Node *node)
+{
+    if (node == NULL)
+        return 0;
+    else
+    {
+        int leftHeight = height(node->left);
+        int rightHeight = height(node->right);
+        return max(leftHeight, rightHeight) + 1;
+    }
+}
+
+int BST::findMin(Node *node)
+{
+    if (node == NULL)
+    {
+        cout << "\n\tTree is empty";
+        return -1; 
+    }
+    while (node->left != NULL)
+    {
+        node = node->left;
+    }
+    return node->data;
+}
+
+void BST::mirror(Node *node)
+{
+    if (node == NULL)
+        return;
+
+    Node *temp = node->left;
+    node->left = node->right;
+    node->right = temp;
+
+    mirror(node->left);
+    mirror(node->right);
+}
+
+void BST::mirrorTree()
+{
+    mirror(root);
+}
+
+int main()
+{
+    BST tree;
+    int ch, i, val;
+    do
+    {
+        cout << "\n====BST MENU====";
+        cout << "\n1.Insert";
+        cout << "\n2.Display";
+        cout << "\n3.Search the node";
+        cout << "\n4.Height of the tree";
+        cout << "\n5.Minimum value in the tree";
+        cout << "\n6.Mirror the tree";
+        cout << "\n7.Exit";
+        cout << "\nEnter your choice: ";
+        cin >> ch;
+
+        switch (ch)
+        {
+        case 1:
+            tree.insert();
+            cout << "\n";
+            break;
+        case 2:
+            cout << "\nTREE:\n";
+            if (tree.return_root() == NULL)
+                cout << "\nTree is empty";
+            else
+                tree.display(tree.return_root());
+            cout << "\n";
+            break;
+        case 3:
+            i = tree.search();
+            if (i == 0)
+            {
+                cout << "\nValue is absent";
+            }
+            cout << "\n";
+            break;
+        case 4:
+            cout << "\nHeight of the tree: " << tree.height(tree.return_root());
+            cout << "\n";
+            break;
+        case 5:
+            val = tree.findMin(tree.return_root());
+            if (val != -1)
+                cout << "\nMinimum value in the tree: " << val;
+            cout << "\n";
+            break;
+        case 6:
+            tree.mirrorTree();
+            cout << "\nTree mirrored successfully";
+            cout << "\n";
+            break;
+        case 7:
+            break;
+        default:
+            cout << "\nINVALID INPUT";
+            cout << "\n";
+            break;
+        }
+    } while (ch < 7);
 }
