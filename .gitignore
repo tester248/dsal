@@ -1,1 +1,7 @@
 build/*
+mock/build/*
+.vscode/*
+*.exe
+*.ini
+mock/*.exe
+mock/*.ini

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVL Tree Visualization</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        .tree-step {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+        }
+        svg {
+            border: 1px solid lightgray;
+            width: 100%;
+            min-height: 200px; /* Adjust as needed */
+        }
+        .node circle {
+            fill: lightblue;
+            stroke: steelblue;
+            stroke-width: 2px;
+        }
+        .node text {
+            font-size: 10px;
+            text-anchor: middle;
+            dominant-baseline: middle;
+            fill: black;
+        }
+        .link {
+            stroke: gray;
+            stroke-width: 1px;
+        }
+        .null-node {
+            font-style: italic;
+            fill: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>AVL Tree Operations Visualization</h1>
+
+    <div class="tree-step">
+        <h2>1. After inserting 'stack'</h2>
+        <pre>
+Level Order Traversal:
+stack(0)
+null null
+        </pre>
+        <svg viewBox="0 0 300 150">
+            <!-- Links -->
+            <!-- Nodes -->
+            <g class="node" transform="translate(150, 50)">
+                <circle r="20"></circle>
+                <text y="-3">stack</text>
+                <text y="8" font-size="8px">(0)</text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="tree-step">
+        <h2>2. After inserting 'queue'</h2>
+        <pre>
+Level Order Traversal:
+stack(1)
+queue(0) null
+null null
+        </pre>
+        <svg viewBox="0 0 300 150">
+            <!-- Links -->
+            <line class="link" x1="150" y1="70" x2="100" y2="100"></line>
+            <!-- Nodes -->
+            <g class="node" transform="translate(150, 50)">
+                <circle r="20"></circle>
+                <text y="-3">stack</text>
+                <text y="8" font-size="8px">(1)</text>
+            </g>
+            <g class="node" transform="translate(100, 100)">
+                <circle r="20"></circle>
+                <text y="-3">queue</text>
+                <text y="8" font-size="8px">(0)</text>
+            </g>
+        </svg>
+    </div>
+
+    <div class="tree-step">
+        <h2>3. After inserting 'array' (LL Rotation)</h2>
+        <pre>
+Level Order Traversal:
+queue(0)
+array(0) stack(0)
+null null null null
+        </pre>
+        <svg viewBox="0 0 400 200">
+            <!-- Links -->
+            <line class="link" x1="200" y1="70" x2="100" y2="120"></line>
+            <line class="link" x1="200" y1="70" x2="300" y2="120"></line>
+            <!-- Nodes -->
+            <g class="node" transform="translate(200, 50)">
+                <circle r="20"></circle>
+                <text y="-3">queue</text>
+                <text y="8" font-size="8px">(0)</text>
+            </g>
+            <g class="node" transform="translate(100, 120)">
+                <circle r="20"></circle>
+                <text y="-3">array</text>
+                <text y="8" font-size="8px">(0)</text>
+            </g>
+            <g class="node" transform="translate(300, 120)">
+                <circle r="20"></circle>
+                <text y="-3">stack</text>
+                <text y="8" font-size="8px">(0)</text>
+            </g>
+        </svg>
+    </div>
+
+     <div class="tree-step">
+        <h2>4. After inserting 'tree'</h2>
+        <pre>
+Level Order Traversal:
+queue(-1)
+array(0) stack(-1)
+null null null tree(0)
+null null
+        </pre>
+        <svg viewBox="0 0 500 250">
+            <!-- Links -->
+            <line class="link" x1="250" y1="70" x2="150" y2="120"></line>
+            <line class="link" x1="250" y1="70" x2="350" y2="120"></line>
+            <line class="link" x1="350" y1="140" x2="400" y2="190"></line>
+            <!-- Nodes -->
+            <g class="node" transform="translate(250, 50)"> <circle r="20"></circle> <text y="-3">queue</text> <text y="8" font-size="8px">(-1)</text> </g>
+            <g class="node" transform="translate(150, 120)"> <circle r="20"></circle> <text y="-3">array</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(350, 120)"> <circle r="20"></circle> <text y="-3">stack</text> <text y="8" font-size="8px">(-1)</text> </g>
+            <g class="node" transform="translate(400, 190)"> <circle r="20"></circle> <text y="-3">tree</text> <text y="8" font-size="8px">(0)</text> </g>
+        </svg>
+    </div>
+
+    <div class="tree-step">
+        <h2>5. After inserting 'apple'</h2>
+        <pre>
+Level Order Traversal:
+queue(1)
+array(1) stack(-1)
+algorithm(-1) avl(0) null tree(0)
+null apple(0) null null null null
+null null
+        </pre>
+        <svg viewBox="0 0 800 300">
+            <!-- Links -->
+            <line class="link" x1="400" y1="70" x2="200" y2="120"></line>
+            <line class="link" x1="400" y1="70" x2="600" y2="120"></line>
+            <line class="link" x1="200" y1="140" x2="100" y2="190"></line>
+            <line class="link" x1="200" y1="140" x2="300" y2="190"></line>
+            <line class="link" x1="600" y1="140" x2="700" y2="190"></line>
+            <line class="link" x1="100" y1="210" x2="150" y2="260"></line>
+            <!-- Nodes -->
+            <g class="node" transform="translate(400, 50)"> <circle r="20"></circle> <text y="-3">queue</text> <text y="8" font-size="8px">(1)</text> </g>
+            <g class="node" transform="translate(200, 120)"> <circle r="20"></circle> <text y="-3">array</text> <text y="8" font-size="8px">(1)</text> </g>
+            <g class="node" transform="translate(600, 120)"> <circle r="20"></circle> <text y="-3">stack</text> <text y="8" font-size="8px">(-1)</text> </g>
+            <g class="node" transform="translate(100, 190)"> <circle r="20"></circle> <text y="-3">algorithm</text> <text y="8" font-size="8px">(-1)</text> </g>
+            <g class="node" transform="translate(300, 190)"> <circle r="20"></circle> <text y="-3">avl</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(700, 190)"> <circle r="20"></circle> <text y="-3">tree</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(150, 260)"> <circle r="20"></circle> <text y="-3">apple</text> <text y="8" font-size="8px">(0)</text> </g>
+        </svg>
+    </div>
+
+    <div class="tree-step">
+        <h2>6. After deleting 'stack' (LL Rotation)</h2>
+        <pre>
+Level Order Traversal:
+array(0)
+algorithm(-1) queue(0)
+null apple(0) avl(0) tree(0)
+null null null null null null
+        </pre>
+        <svg viewBox="0 0 800 300">
+            <!-- Links -->
+            <line class="link" x1="400" y1="70" x2="200" y2="120"></line>
+            <line class="link" x1="400" y1="70" x2="600" y2="120"></line>
+            <line class="link" x1="200" y1="140" x2="300" y2="190"></line> <!-- algorithm right child (apple) -->
+            <line class="link" x1="600" y1="140" x2="500" y2="190"></line> <!-- queue left child (avl) -->
+            <line class="link" x1="600" y1="140" x2="700" y2="190"></line> <!-- queue right child (tree) -->
+            <!-- Nodes -->
+            <g class="node" transform="translate(400, 50)"> <circle r="20"></circle> <text y="-3">array</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(200, 120)"> <circle r="20"></circle> <text y="-3">algorithm</text> <text y="8" font-size="8px">(-1)</text> </g>
+            <g class="node" transform="translate(600, 120)"> <circle r="20"></circle> <text y="-3">queue</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(300, 190)"> <circle r="20"></circle> <text y="-3">apple</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(500, 190)"> <circle r="20"></circle> <text y="-3">avl</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(700, 190)"> <circle r="20"></circle> <text y="-3">tree</text> <text y="8" font-size="8px">(0)</text> </g>
+        </svg>
+    </div>
+
+    <div class="tree-step">
+        <h2>7. Final State (After Update, Height Check, etc.)</h2>
+        <p>Tree structure is the same as after deleting 'stack'.</p>
+        <pre>
+Level Order Traversal:
+array(0)
+algorithm(-1) queue(0)
+null apple(0) avl(0) tree(0)
+null null null null null null
+        </pre>
+        <svg viewBox="0 0 800 300">
+            <!-- Links -->
+            <line class="link" x1="400" y1="70" x2="200" y2="120"></line>
+            <line class="link" x1="400" y1="70" x2="600" y2="120"></line>
+            <line class="link" x1="200" y1="140" x2="300" y2="190"></line> <!-- algorithm right child (apple) -->
+            <line class="link" x1="600" y1="140" x2="500" y2="190"></line> <!-- queue left child (avl) -->
+            <line class="link" x1="600" y1="140" x2="700" y2="190"></line> <!-- queue right child (tree) -->
+            <!-- Nodes -->
+            <g class="node" transform="translate(400, 50)"> <circle r="20"></circle> <text y="-3">array</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(200, 120)"> <circle r="20"></circle> <text y="-3">algorithm</text> <text y="8" font-size="8px">(-1)</text> </g>
+            <g class="node" transform="translate(600, 120)"> <circle r="20"></circle> <text y="-3">queue</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(300, 190)"> <circle r="20"></circle> <text y="-3">apple</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(500, 190)"> <circle r="20"></circle> <text y="-3">avl</text> <text y="8" font-size="8px">(0)</text> </g>
+            <g class="node" transform="translate(700, 190)"> <circle r="20"></circle> <text y="-3">tree</text> <text y="8" font-size="8px">(0)</text> </g>
+        </svg>
+    </div>
+
+</body>
+</html>
