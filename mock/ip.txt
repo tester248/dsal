@@ -1,0 +1,279 @@
+PS G:\My Drive\DSA\DSAL> g++ ./avltree.cpp -o build/avltree
+PS G:\My Drive\DSA\DSAL> build/avltree
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 1
+Enter keyword: stack
+Enter meaning: lifo
+Level Order Traversal:
+stack(0) 
+null null 
+------------------------
+Keyword 'stack' inserted. Tree remains balanced.
+Add more keywords? (y/n): y
+Enter keyword: queue
+Enter meaning: fifo
+Level Order Traversal:
+stack(1) 
+queue(0) null 
+null null 
+------------------------
+Keyword 'queue' inserted. Tree remains balanced.
+Add more keywords? (y/n): y
+Enter keyword: array      
+Enter meaning: linear ds
+Tree before LL rotation at stack:
+Level Order Traversal:
+stack(2) 
+queue(1) null 
+array(0) null 
+null null 
+------------------------
+Performing Right Rotation at node: stack
+Tree after LL rotation:
+Level Order Traversal:
+queue(0) 
+array(0) stack(0) 
+null null null null 
+------------------------
+Level Order Traversal:
+queue(0) 
+array(0) stack(0) 
+null null null null 
+------------------------
+Keyword 'array' inserted/processed (rotation occurred).
+Add more keywords? (y/n): y
+Enter keyword: tree
+Enter meaning: hierarchical ds
+Level Order Traversal:
+queue(-1)
+array(0) stack(-1)
+null null null tree(0)
+null null 
+------------------------
+Keyword 'tree' inserted. Tree remains balanced.
+Add more keywords? (y/n): y
+Enter keyword: avl
+Enter meaning: self balancing
+Level Order Traversal:
+queue(0)
+array(-1) stack(-1)
+null avl(0) null tree(0)
+null null null null
+------------------------
+Keyword 'avl' inserted. Tree remains balanced.
+Add more keywords? (y/n): y
+Enter keyword: algorithm
+Enter meaning: step by step instructions 
+Level Order Traversal:
+queue(0)
+array(0) stack(-1)
+algorithm(0) avl(0) null tree(0)
+null null null null null null
+------------------------
+Keyword 'algorithm' inserted. Tree remains balanced.
+Add more keywords? (y/n): n
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 1
+Enter keyword: apple
+Enter meaning: fruit
+Level Order Traversal:
+queue(1)
+array(1) stack(-1)
+algorithm(-1) avl(0) null tree(0)
+null apple(0) null null null null 
+null null
+------------------------
+Keyword 'apple' inserted. Tree remains balanced.
+Add more keywords? (y/n): n
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 2
+algorithm (-1) step by step instructions
+apple (0) fruit
+array (1) linear ds
+avl (0) self balancing
+queue (1) fifo
+stack (-1) lifo
+tree (0) hierarchical ds
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 3
+tree (0) hierarchical ds
+stack (-1) lifo
+queue (1) fifo
+avl (0) self balancing
+array (1) linear ds
+apple (0) fruit
+algorithm (-1) step by step instructions
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 4
+Enter keyword to delete: stack
+Tree before LL rotation at queue:
+Level Order Traversal:
+queue(2)
+array(1) tree(0)
+algorithm(-1) avl(0) null null
+null apple(0) null null
+null null
+------------------------
+Performing Right Rotation at node: queue
+Tree after LL rotation:
+Level Order Traversal:
+array(0)
+algorithm(-1) queue(0)
+null apple(0) avl(0) tree(0)
+null null null null null null 
+------------------------
+Keyword 'stack' deleted.
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 8
+Current Tree State:
+Level Order Traversal:
+array(0)
+algorithm(-1) queue(0)
+null apple(0) avl(0) tree(0) 
+null null null null null null
+------------------------
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 5
+Enter keyword to search: algorithm
+step by step instructions (Comparisons: 2)
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 6
+Enter keyword to update: queue
+Enter new meaning: linear fifo
+Meaning updated.
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 7
+Tree Height: 3
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 8
+Current Tree State:
+Level Order Traversal:
+array(0)
+algorithm(-1) queue(0)
+null apple(0) avl(0) tree(0)
+null null null null null null
+------------------------
+
+==== AVL Dictionary Menu ====
+
+1. Add new keyword and meaning
+2. Print all entries in ascending order
+3. Print all entries in descending order
+4. Delete a keyword from dictionary
+5. Search a keyword
+6. Update meaning of a keyword
+7. Get Tree Height
+8. Display Tree Level Order
+9. Exit program
+Enter your choice: 9
+PS G:\My Drive\DSA\DSAL>
