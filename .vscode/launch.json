@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "g:/My Drive/DSA/DSAL/mock",
-      "program": "g:/My Drive/DSA/DSAL/build/Debug/",
+      "cwd": "g:/My Drive/DSA/DSAL/prac",
+      "program": "g:/My Drive/DSA/DSAL/prac/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

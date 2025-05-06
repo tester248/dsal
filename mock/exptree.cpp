@@ -1,162 +1,179 @@
-#include<iostream>
-#include<algorithm>
-//+--a*bc/def
+#include <iostream>
+#include <algorithm>
 using namespace std;
-const int max_size = 100;
+const int MAX_SIZE = 100; 
 
-struct Node {
+struct Node{
     char data;
     Node* left;
     Node* right;
-    Node(char ch) {
+    Node(char ch){
         data = ch;
         left = right = nullptr;
     }
 };
 
-class Stack
-{
-    private:
-        Node *arr[max_size];
-        int top;
-    public:
-        Stack() {
-            top = -1;
+class Stack {
+private:
+    Node* arr[MAX_SIZE];
+    int top;
+public:
+    Stack() {
+        top = -1; 
+    }
+    void push(Node* newNode) {
+        if (top >= MAX_SIZE - 1) {
+            cout << "Stack Overflow" << endl;
         }
-        void push(Node* newNode) {
-            if (top >= max_size -1) {
-                cout << "Stack Overflow" << endl;
-            } else {
-                arr[++top] = newNode;
-            }
+        arr[++top] = newNode;
+    }
+    Node* pop() {
+        if (top < 0) {
+            cout << "Stack Underflow" << endl;
+            return nullptr; 
         }
-        Node* pop() {
-            if (top < 0) {
-                cout << "Stack Underflow" << endl;
-                return nullptr;
-            } else {
-                return arr[top--];
-            }
+        return arr[top--];
+    }
+
+    bool isEmpty() {
+        return (top < 0);
+    }
+
+    Node* peek() {
+        if (top < 0) {
+            cout << "Stack is Empty" << endl;
+            return nullptr; 
         }
-        bool isEmpty() {
-            return (top < 0);
-        }
-        Node* peek() {
-            if (top < 0) {
-                cout << "Stack is Empty" << endl;
-                return nullptr;
-            } else {
-                return arr[top];
-            }
-        }
+        return arr[top];
+    }
 };
 
 class ExpressionTree {
-    private:
-        Node* root;
-    public:
-        ExpressionTree() {
-            root = nullptr;
-        }
-        Node* constructTree(string prefix)
-        {
-            Stack s;
-            for(int i = prefix.size() - 1; i >= 0; i--)
-            {
-                if(isalnum(prefix[i]))
-                {
-                    Node* newNode = new Node(prefix[i]);
-                    s.push(newNode);
-                } else {
-                    Node* newNode = new Node(prefix[i]);
-                    newNode->left = s.pop();
-                    newNode->right = s.pop();
-                    s.push(newNode);
-                }
-            }
-            return s.pop();
-        }
+private:
+    Node* root;
+public:
+    ExpressionTree() {
+        root = nullptr;
+    }
 
-        void postOrder(Node* root)
-        {
-            if (root == nullptr)
-                cout << "Tree is empty." << endl;
-                return;
-            Stack s;
-            string postOrder = "";
-            s.push(root);
-            while (!s.isEmpty()) {
-                Node* temp = s.peek();
-                s.pop();
-                postOrder += temp->data;
-                if (temp->left) {
-                    s.push(temp->left);
-                }
-                if (temp->right) {
-                    s.push(temp->right);
-                }
+    Node* constructTree(string prefix)
+    {
+        Stack stack;
+        for (int i = prefix.size() -1; i >= 0; i--) {
+            if (isalnum(prefix[i])) {
+                Node* newNode = new Node(prefix[i]);
+                stack.push(newNode);
+            } else {
+                Node* newNode = new Node(prefix[i]);
+                newNode->left = stack.pop();
+                newNode->right = stack.pop();
+                stack.push(newNode);
             }
-            reverse(postOrder.begin(), postOrder.end());
-            cout << "Postorder traversal: " << postOrder << endl;
         }
+        return stack.pop();
+    }
 
-        void deleteTree(Node* root)
-        {
-            if (root == nullptr) {
-                cout<< "Tree is already empty." << endl;
-                return;
-            }
-            Stack s;
-            s.push(root);
-            while (!s.isEmpty()) {
-                Node* temp = s.peek();
-                s.pop();
-                if (temp->left) {
-                    s.push(temp->left);
-                }
-                if (temp->right) {
-                    s.push(temp->right);
-                }
-                delete temp;
-            }
-            cout << "Tree deleted successfully." << endl;
+    // postorder traversal (non recursive) using string reversal
+    void postOrder(Node* root)
+    {
+        if (root == nullptr) {
+            return;
         }
+        Stack stack;
+        string postOrder = "";
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node* temp = stack.peek();
+            stack.pop();
+            postOrder += temp->data;
+            if (temp->left) {
+                stack.push(temp->left);
+            }
+            if (temp->right) {
+                stack.push(temp->right);
+            }
+        }
+        
+        //string reversal
+        reverse(postOrder.begin(), postOrder.end());
+        cout << "Postorder traversal: " << postOrder << endl;
+    }
+
+    //delete tree (non recursive)
+    void deleteTree(Node* root)
+    {
+        if (root == nullptr) {
+            return;
+        }
+        Stack stack;
+        stack.push(root);
+        while (!stack.isEmpty()) {
+            Node* temp = stack.peek();
+            stack.pop();
+            if (temp->left) {
+                stack.push(temp->left);
+            }
+            if (temp->right) {
+                stack.push(temp->right);
+            }
+            delete temp;
+        }
+    }
+
 };
 
-int main()
-{
+int main() {
     ExpressionTree tree;
     string prefix;
     int choice;
     Node* root = nullptr;
 
-    do{
-        cout <<endl<< "==Expression Tree Menu=="<<endl;
-        cout << "1. Construct Tree from Prefix Expression" << endl;
-        cout << "2. Postorder Traversal" << endl;
-        cout << "3. Delete Tree" << endl;
-        cout << "4. Exit" << endl;
+    do {
+        cout << "\nMenu:\n";
+        cout << "1. Construct Expression Tree\n";
+        cout << "2. Postorder Traversal\n";
+        cout << "3. Delete Tree\n";
+        cout << "4. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
-        switch(choice) {
+
+        switch (choice) {
             case 1:
                 cout << "Enter prefix expression: ";
                 cin >> prefix;
+                if(root != nullptr)
+                {
+                    tree.deleteTree(root);
+                }
                 root = tree.constructTree(prefix);
-                cout << "Expression Tree constructed." << endl;
+                if(root != nullptr){
+                    cout << "Expression tree constructed.\n";
+                }
                 break;
             case 2:
-                tree.postOrder(root);
+                if (root == nullptr) {
+                    cout << "Tree is empty. Construct tree first.\n";
+                } else {
+                    tree.postOrder(root);
+                }
                 break;
             case 3:
-                tree.deleteTree(root);
-                root = nullptr;
+                if (root == nullptr) {
+                    cout << "Tree is empty.\n";
+                } else {
+                    tree.deleteTree(root);
+                    root = nullptr;
+                    cout << "Tree deleted.\n";
+                }
                 break;
             case 4:
-                cout << "Exiting..." << endl;
+                if(root != nullptr){
+                    tree.deleteTree(root);
+                }
+                cout << "Exiting program.\n";
                 break;
             default:
-                cout << "Invalid choice. Try again." << endl;
+                cout << "Invalid choice. Try again.\n";
         }
-    }while(choice != 4);
+    } while (choice != 4);
 }

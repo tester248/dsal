@@ -1,3 +1,0 @@
-78,Ashwin Mathur,A,Pune
-2,Random,B,Pune
-67,Anonymous,A,Mumbai
